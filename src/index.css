@@ -3,7 +3,7 @@
 Fonts
 ===============
 */
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&family=Fraunces:wght@400;900&display=swap');
 
 /*
 =============== 
@@ -16,10 +16,14 @@ Variables
   --clr-primary-soft-blue: hsl(231, 69%, 60%);
   --clr-primary-soft-red: hsl(0, 94%, 66%);
   --clr-primary-grayish-blue: hsl(229, 8%, 60%);
+  --clr-primary-light-grey: hsl(228, 6%, 84%);
+  --clr-primary-light-cream: hsl(43, 78%, 98%);
+  --clr-primary-cream: hsl(48, 14%, 86%);
   --clr-primary-dark-grayish-blue: hsl(231, 5%, 29%);
   --clr-primary-very-dark-blue: hsl(229, 31%, 21%);
 
-  --ff-primary: 'Rubik', sans-serif;
+  --ff-primary: 'Barlow', sans-serif;
+  --ff-secondary: 'Fraunces', sans-serif;
   --transition: all 0.3s linear;
   --spacing: 0.1rem;
   --radius: 0.25rem;
@@ -49,6 +53,7 @@ body {
   transition: var(--transition);
   margin: 0 auto;
   height: 100vh;
+  /* min-width: 600px; */
 }
 .img {
   display: block;
@@ -69,24 +74,34 @@ h1,
 h2,
 h3,
 h4 {
-  letter-spacing: var(--spacing);
-  text-transform: capitalize;
-  line-height: 1.25;
-  margin-bottom: 0.75rem;
+  font-family: var(--ff-secondary);
 }
 h1 {
-  font-size: 3rem;
+  font-size: 72px;
+  line-height: 72px;
 }
 h2 {
-  font-size: 2rem;
+  font-size: 40px;
+  line-height: 48px;
 }
 h3 {
-  font-size: 1.5rem;
+  font-size: 32px;
+  line-height: 36px;
 }
 h4 {
-  font-size: 0.875rem;
+  font-size: 24px;
+  line-height: 32px;
+}
+h5 {
+  font-size: 150px;
+  text-transform: lowercase;
+  line-height: 72px;
+  font-family: var(--ff-secondary);
 }
 p {
+  font-size: 16px;
+  font-family: var(--ff-primary);
+  line-height: 26px;
   margin-bottom: 1.25rem;
 }
 .btn {
@@ -119,16 +134,132 @@ p {
 Styles
 ===============
 */
-.app {
-  padding: 3rem;
+
+/* header */
+.header {
+  background: url(./images/main-bg.jpg) center/cover;
+  background: linear-gradient(rgb(44, 109, 140, 0.9), rgba(247, 244, 244, 0.3)),
+    url('./images/main-bg.jpg') center/cover no-repeat;
+  height: 38rem;
+  width: 100vw;
+}
+.header-center {
+  padding: 2rem;
+  display: grid;
+  justify-items: center;
+}
+.header h1 {
+  color: var(--clr-primary-cream);
+  font-size: 3rem;
+  text-transform: capitalize;
+  text-align: center;
+  margin: 0 auto;
+  width: 60vw;
+}
+.buttons-container p {
+  text-transform: uppercase;
+  color: var(--clr-primary-dark-grayish-blue);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  padding-bottom: 0;
+}
+.buttons-container {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+.choose-btn-img {
+  width: 4rem;
+  height: 4rem;
+}
+.choose-btn {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  border: transparent;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.choose-btn:hover {
+  transform: scale(1.1);
+}
+
+/* score board */
+.score-board h3 {
+  color: var(--clr-primary-dark-grayish-blue);
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+}
+.score-board h3 span {
+  color: var(--clr-primary-soft-red);
+}
+
+.game-score-container {
+  margin-top: -10rem;
+  display: grid;
+  justify-items: right;
 }
 .game {
   width: 560px;
   height: 560px;
   display: flex;
   flex-wrap: wrap;
+  /* border: 6px solid var(--clr-primary-grayish-blue); */
+  padding: 1rem;
+
+  background: white;
 }
 .game img {
-  width: 70px;
-  height: 70px;
+  width: 65px;
+  height: 65px;
+  /* width: 10vw; */
+}
+@media screen and (min-width: 650px) {
+  .game-score-container {
+    margin-top: -14rem;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .main {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    max-width: var(--max-width);
+  }
+  .header {
+    width: 45vw;
+  }
+  .header-center {
+    justify-items: left;
+    padding-top: 4rem;
+  }
+  .header h1 {
+    color: var(--clr-primary-cream);
+    font-size: 2.5rem;
+    text-transform: capitalize;
+    text-align: left;
+    margin: 0;
+    width: 20rem;
+  }
+  .buttons-container p {
+    font-size: 1rem;
+  }
+  .buttons-container {
+    margin-top: 6rem;
+  }
+  .choose-btn-img {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  .choose-btn {
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    border: transparent;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  .game-score-container {
+    margin-top: 1rem;
+    display: grid;
+    justify-items: right;
+  }
 }
