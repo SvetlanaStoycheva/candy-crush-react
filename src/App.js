@@ -6,9 +6,9 @@ import tesla_04 from './images/tesla/model-X.jpg';
 import tesla_05 from './images/tesla/model-Y.jpg';
 import tesla_06 from './images/tesla/tesla-bot.jpg';
 import blank from './images/tesla/blank.jpg';
+import ScoreBoard from './components/ScoreBoard';
 
 const width = 8;
-// const candyColors = ['blue', 'green', 'orange', 'purple', 'red', 'yellow'];
 const candyColors = [
   tesla_01,
   tesla_02,
@@ -22,19 +22,23 @@ const App = () => {
   const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
   const [squareBeingDragged, setSquareBeingDragged] = useState(null);
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
+  const [scoreDisplay, setScoreDisplay] = useState(0);
 
   const checkForColumnOfThree = () => {
     for (let i = 0; i <= 47; i++) {
       // first column contains squares with index 0, 9, 16. Tha last square that can start a columnOfThree has index 47
       const columnOfThree = [i, i + width, i + width * 2];
       const decidedColor = currentColorArrangement[i];
+      // to avoid counting blank squares in the score at the beginning:
+      const isBlank = currentColorArrangement[i] === blank;
 
       // check if column of square 1, 9 and 16 are all the same color as the first square, whitch is the decidedColor. If so, set the color to ''.
       if (
         columnOfThree.every(
-          (item) => currentColorArrangement[item] === decidedColor
+          (item) => currentColorArrangement[item] === decidedColor && !isBlank
         )
       ) {
+        setScoreDisplay((score) => score + 3);
         columnOfThree.forEach(
           (item) => (currentColorArrangement[item] = blank)
         );
@@ -47,12 +51,14 @@ const App = () => {
     for (let i = 0; i <= 39; i++) {
       const columnOfFour = [i, i + width, i + width * 2, i + width * 3];
       const decidedColor = currentColorArrangement[i];
+      const isBlank = currentColorArrangement[i] === blank;
 
       if (
         columnOfFour.every(
-          (item) => currentColorArrangement[item] === decidedColor
+          (item) => currentColorArrangement[item] === decidedColor && !isBlank
         )
       ) {
+        setScoreDisplay((score) => score + 4);
         columnOfFour.forEach((item) => (currentColorArrangement[item] = blank));
         return true;
       }
@@ -63,6 +69,7 @@ const App = () => {
     for (let i = 0; i < 64; i++) {
       const rowOfThree = [i, i + 1, i + 2];
       const decidedColor = currentColorArrangement[i];
+      const isBlank = currentColorArrangement[i] === blank;
       // exclude from checking the last two squares of each row
       const notValid = [
         6,
@@ -87,9 +94,10 @@ const App = () => {
 
       if (
         rowOfThree.every(
-          (item) => currentColorArrangement[item] === decidedColor
+          (item) => currentColorArrangement[item] === decidedColor && !isBlank
         )
       ) {
+        setScoreDisplay((score) => score + 3);
         rowOfThree.forEach((item) => (currentColorArrangement[item] = blank));
         return true;
       }
@@ -100,6 +108,7 @@ const App = () => {
     for (let i = 0; i < 64; i++) {
       const rowOfFour = [i, i + 1, i + 2, i + 3];
       const decidedColor = currentColorArrangement[i];
+      const isBlank = currentColorArrangement[i] === blank;
       // exclude from checking the last two squares of each row
       const notValid = [
         5,
@@ -132,9 +141,10 @@ const App = () => {
 
       if (
         rowOfFour.every(
-          (item) => currentColorArrangement[item] === decidedColor
+          (item) => currentColorArrangement[item] === decidedColor && !isBlank
         )
       ) {
+        setScoreDisplay((score) => score + 4);
         rowOfFour.forEach((item) => (currentColorArrangement[item] = blank));
         return true;
       }
@@ -198,7 +208,7 @@ const App = () => {
 
     if (
       squareBeingReplacedId &&
-      validMoves &&
+      validMove &&
       (isAColumnOfFour || isAColumnOfThree || isARowOfFour || isARowOfThree)
     ) {
       setSquareBeingReplaced(null);
@@ -247,11 +257,11 @@ const App = () => {
     }, 100);
     return () => clearInterval(timer);
   }, [
-    checkForColumnOfFour,
-    checkForColumnOfThree,
-    checkForRowOfFour,
-    checkForRowOfThree,
-    moveIntoSquareBelow,
+    // checkForColumnOfFour,
+    // checkForColumnOfThree,
+    // checkForRowOfFour,
+    // checkForRowOfThree,
+    // moveIntoSquareBelow,
     currentColorArrangement,
   ]);
 
@@ -277,6 +287,7 @@ const App = () => {
           );
         })}
       </div>
+      <ScoreBoard score={scoreDisplay} />
     </div>
   );
 };
