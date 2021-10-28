@@ -1,7 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import tesla_01 from './images/tesla/cybertruck.jpg';
+import tesla_02 from './images/tesla/model-3.jpg';
+import tesla_03 from './images/tesla/model-s.jpg';
+import tesla_04 from './images/tesla/model-X.jpg';
+import tesla_05 from './images/tesla/model-Y.jpg';
+import tesla_06 from './images/tesla/tesla-bot.jpg';
+import blank from './images/tesla/blank.jpg';
 
 const width = 8;
-const candyColors = ['blue', 'green', 'orange', 'purple', 'red', 'yellow'];
+// const candyColors = ['blue', 'green', 'orange', 'purple', 'red', 'yellow'];
+const candyColors = [
+  tesla_01,
+  tesla_02,
+  tesla_03,
+  tesla_04,
+  tesla_05,
+  tesla_06,
+];
 
 const App = () => {
   const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
@@ -20,7 +35,10 @@ const App = () => {
           (item) => currentColorArrangement[item] === decidedColor
         )
       ) {
-        columnOfThree.forEach((item) => (currentColorArrangement[item] = ''));
+        columnOfThree.forEach(
+          (item) => (currentColorArrangement[item] = blank)
+        );
+        return true;
       }
     }
   };
@@ -35,7 +53,8 @@ const App = () => {
           (item) => currentColorArrangement[item] === decidedColor
         )
       ) {
-        columnOfFour.forEach((item) => (currentColorArrangement[item] = ''));
+        columnOfFour.forEach((item) => (currentColorArrangement[item] = blank));
+        return true;
       }
     }
   };
@@ -71,7 +90,8 @@ const App = () => {
           (item) => currentColorArrangement[item] === decidedColor
         )
       ) {
-        rowOfThree.forEach((item) => (currentColorArrangement[item] = ''));
+        rowOfThree.forEach((item) => (currentColorArrangement[item] = blank));
+        return true;
       }
     }
   };
@@ -115,7 +135,8 @@ const App = () => {
           (item) => currentColorArrangement[item] === decidedColor
         )
       ) {
-        rowOfFour.forEach((item) => (currentColorArrangement[item] = ''));
+        rowOfFour.forEach((item) => (currentColorArrangement[item] = blank));
+        return true;
       }
     }
   };
@@ -126,34 +147,76 @@ const App = () => {
       const isFirstRow = firstRow.includes(i);
 
       //if it is first row and empty => generate random color
-      if (isFirstRow && currentColorArrangement[i] === '') {
+      if (isFirstRow && currentColorArrangement[i] === blank) {
         let randomNumber = Math.floor(Math.random() * candyColors.length);
         currentColorArrangement[i] = candyColors[randomNumber];
       }
 
       //if the square bellow the square we are looping, is empty => it will adopt the color; moving the colors down and the blanks up
-      if (currentColorArrangement[i + width] === '') {
+      if (currentColorArrangement[i + width] === blank) {
         currentColorArrangement[i + width] = currentColorArrangement[i];
-        currentColorArrangement[i] = '';
+        currentColorArrangement[i] = blank;
       }
     }
   };
 
   const dragStart = (e) => {
-    console.log('drag start', e.target);
+    // console.log('drag start', e.target);
     setSquareBeingDragged(e.target);
   };
 
   const dragDrop = (e) => {
-    console.log('drag Drop', e.target);
+    // console.log('drag Drop', e.target);
     setSquareBeingReplaced(e.target);
   };
+
   const dragEnd = (e) => {
-    console.log('drag End', e.target.dataset);
+    // console.log('drag End', e.target.dataset);
 
     const squareBeingReplacedId = parseInt(squareBeingReplaced.dataset.id);
     const squareBeingDraggedId = parseInt(squareBeingDragged.dataset.id);
-    console.log(squareBeingReplacedId, squareBeingDraggedId);
+
+    currentColorArrangement[
+      squareBeingReplacedId
+    ] = squareBeingDragged.getAttribute('src');
+    currentColorArrangement[
+      squareBeingDraggedId
+    ] = squareBeingReplaced.getAttribute('src');
+
+    const validMoves = [
+      squareBeingDragged + 1,
+      squareBeingDragged - 1,
+      squareBeingDragged + width,
+      squareBeingDragged - width,
+    ];
+    const validMove = validMoves.includes(squareBeingReplacedId);
+
+    const isAColumnOfFour = checkForColumnOfFour();
+    const isAColumnOfThree = checkForColumnOfThree();
+    const isARowOfFour = checkForRowOfFour();
+    const isARowOfThree = checkForRowOfThree();
+
+    if (
+      squareBeingReplacedId &&
+      validMoves &&
+      (isAColumnOfFour || isAColumnOfThree || isARowOfFour || isARowOfThree)
+    ) {
+      setSquareBeingReplaced(null);
+      setSquareBeingDragged(null);
+    } else {
+      // currentColorArrangement[squareBeingReplacedId] =
+      //   squareBeingReplaced.style.backgroundColor;
+      // currentColorArrangement[squareBeingDraggedId] =
+      //   squareBeingDragged.style.backgroundColor;
+      currentColorArrangement[
+        squareBeingReplacedId
+      ] = squareBeingReplaced.getAttribute('src');
+      currentColorArrangement[
+        squareBeingDraggedId
+      ] = squareBeingDragged.getAttribute('src');
+
+      setCurrentColorArrangement([...currentColorArrangement]);
+    }
   };
 
   const createBoard = () => {
@@ -171,7 +234,7 @@ const App = () => {
     createBoard();
   }, []);
 
-  // check for ColumnsOfThree every 1sec
+  // check for ColumnsOfThree every 100msec
   useEffect(() => {
     const timer = setInterval(() => {
       checkForColumnOfFour();
@@ -181,7 +244,7 @@ const App = () => {
       moveIntoSquareBelow();
       //reset the board
       setCurrentColorArrangement([...currentColorArrangement]);
-    }, 1000);
+    }, 100);
     return () => clearInterval(timer);
   }, [
     checkForColumnOfFour,
@@ -199,8 +262,8 @@ const App = () => {
           return (
             <img
               key={index}
-              style={{ backgroundColor: item }}
-              src=''
+              // style={{ backgroundColor: item }}
+              src={item}
               alt={item}
               data-id={index}
               draggable={true}
