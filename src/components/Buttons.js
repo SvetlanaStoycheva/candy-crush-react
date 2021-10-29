@@ -1,7 +1,10 @@
 import React from 'react';
 import { buttons } from '../utils';
+import { useGlobalContext } from '../context';
 
 const Buttons = () => {
+  const { handleCurrentBtn } = useGlobalContext();
+
   return (
     <section className='header'>
       <div className='header-center'>
@@ -11,7 +14,12 @@ const Buttons = () => {
           <p>choose the main character and have fun!</p>
           {buttons.map((item) => {
             return (
-              <button className='choose-btn' key={item.id}>
+              <button
+                className='choose-btn'
+                key={item.id}
+                data-id={item.title}
+                onClick={(e) => handleCurrentBtn(e)}
+              >
                 <p>{item.title}</p>
                 <img className='choose-btn-img' src={item.img} alt='' />
               </button>

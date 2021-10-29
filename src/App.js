@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import tesla_01 from './images/tesla/cybertruck.jpg';
-import tesla_02 from './images/tesla/model-3.jpg';
-import tesla_03 from './images/tesla/model-s.jpg';
-import tesla_04 from './images/tesla/model-X.jpg';
-import tesla_05 from './images/tesla/model-Y.jpg';
-import tesla_06 from './images/tesla/tesla-bot.jpg';
+import { useGlobalContext } from './context';
 import blank from './images/tesla/blank.jpg';
 import ScoreBoard from './components/ScoreBoard';
 import Buttons from './components/Buttons';
 
 const width = 8;
-const candyColors = [
-  tesla_01,
-  tesla_02,
-  tesla_03,
-  tesla_04,
-  tesla_05,
-  tesla_06,
-];
 
 const App = () => {
+  const { currentSetImages } = useGlobalContext();
   const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
   const [squareBeingDragged, setSquareBeingDragged] = useState(null);
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
   const [scoreDisplay, setScoreDisplay] = useState(0);
+  // console.log(currentSetImages);
 
   const checkForColumnOfThree = () => {
     for (let i = 0; i <= 47; i++) {
@@ -159,8 +148,8 @@ const App = () => {
 
       //if it is first row and empty => generate random color
       if (isFirstRow && currentColorArrangement[i] === blank) {
-        let randomNumber = Math.floor(Math.random() * candyColors.length);
-        currentColorArrangement[i] = candyColors[randomNumber];
+        let randomNumber = Math.floor(Math.random() * currentSetImages.length);
+        currentColorArrangement[i] = currentSetImages[randomNumber];
       }
 
       //if the square bellow the square we are looping, is empty => it will adopt the color; moving the colors down and the blanks up
@@ -234,7 +223,7 @@ const App = () => {
     const randomColorArrangment = [];
     for (let i = 0; i < width * width; i++) {
       const randomColor =
-        candyColors[Math.floor(Math.random() * candyColors.length)];
+        currentSetImages[Math.floor(Math.random() * currentSetImages.length)];
 
       randomColorArrangment.push(randomColor);
     }
@@ -243,7 +232,8 @@ const App = () => {
 
   useEffect(() => {
     createBoard();
-  }, []);
+    setScoreDisplay(0);
+  }, [currentSetImages]);
 
   // check for ColumnsOfThree every 100msec
   useEffect(() => {
