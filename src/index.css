@@ -162,7 +162,7 @@ Styles
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 0.1rem;
-  padding-bottom: 0;
+  padding-bottom: 0rem;
 }
 .buttons-container {
   margin-top: 2rem;
@@ -171,6 +171,10 @@ Styles
 .choose-btn-img {
   width: 4rem;
   height: 4rem;
+}
+.choose-btn p {
+  font-size: 0.7rem;
+  height: 0.2rem;
 }
 .choose-btn {
   margin-left: 0.5rem;
@@ -247,8 +251,12 @@ Styles
     margin-top: 6rem;
   }
   .choose-btn-img {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 3.7rem;
+    height: 3.7rem;
+  }
+  .choose-btn p {
+    font-size: 0.7rem;
+    height: 0.2rem;
   }
   .choose-btn {
     margin-left: 0.4rem;

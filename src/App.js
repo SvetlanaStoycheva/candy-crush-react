@@ -7,7 +7,7 @@ import tesla_05 from './images/tesla/model-Y.jpg';
 import tesla_06 from './images/tesla/tesla-bot.jpg';
 import blank from './images/tesla/blank.jpg';
 import ScoreBoard from './components/ScoreBoard';
-import { buttons } from './utils';
+import Buttons from './components/Buttons';
 
 const width = 8;
 const candyColors = [
@@ -268,22 +268,7 @@ const App = () => {
 
   return (
     <main className='main'>
-      <section className='header'>
-        <div className='header-center'>
-          <h1>play your kind of candy crush</h1>
-
-          <div className='buttons-container'>
-            <p>choose the main character and have fun!</p>
-            {buttons.map((item) => {
-              return (
-                <button className='choose-btn' key={item.id}>
-                  <img className='choose-btn-img' src={item.img} alt='' />
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <Buttons />
       <section className='game-score-container'>
         <ScoreBoard score={scoreDisplay} />
         <div className='game'>
