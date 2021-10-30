@@ -1,6 +1,6 @@
 Play your kind of Candy Crush game // React
 
-- [see project]()
+- [see project](https://sweta-candy-crash.netlify.app)
 
 - The game:
   - Crate board: Create a board of 8 \* 8 squares, each square with random image. On initial load, render a shuffled array with images. With every change in the image arrangement, check for 3/4 columns or rows. Replace the equal images in the column/row with blank images. Move the blank images up until they get entirely replaced by images.
