@@ -12,6 +12,7 @@ const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
   const [currentSetImages, setCurrentSetImages] = useState(candyColors);
+  const [squareBeingDragged, setSquareBeingDragged] = useState(0);
 
   const handleCurrentBtn = (e) => {
     // console.log(e.currentTarget.dataset.id);
@@ -29,10 +30,18 @@ const AppProvider = ({ children }) => {
     } else if (btnText === 'music') {
       setCurrentSetImages(musicColors);
     }
+    setSquareBeingDragged(0);
   };
 
   return (
-    <AppContext.Provider value={{ handleCurrentBtn, currentSetImages }}>
+    <AppContext.Provider
+      value={{
+        handleCurrentBtn,
+        currentSetImages,
+        squareBeingDragged,
+        setSquareBeingDragged,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -7,25 +7,26 @@ import Buttons from './components/Buttons';
 const width = 8;
 
 const App = () => {
-  const { currentSetImages } = useGlobalContext();
+  const {
+    currentSetImages,
+    squareBeingDragged,
+    setSquareBeingDragged,
+  } = useGlobalContext();
   const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
-  const [squareBeingDragged, setSquareBeingDragged] = useState(null);
-  const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
+
+  const [squareBeingReplaced, setSquareBeingReplaced] = useState(0);
   const [scoreDisplay, setScoreDisplay] = useState(0);
-  // console.log(currentSetImages);
 
   const checkForColumnOfThree = () => {
     for (let i = 0; i <= 47; i++) {
       // first column contains squares with index 0, 9, 16. Tha last square that can start a columnOfThree has index 47
       const columnOfThree = [i, i + width, i + width * 2];
       const decidedColor = currentColorArrangement[i];
-      // to avoid counting blank squares in the score at the beginning:
-      const isBlank = currentColorArrangement[i] === blank;
 
       // check if column of square 1, 9 and 16 are all the same color as the first square, whitch is the decidedColor. If so, set the color to ''.
       if (
         columnOfThree.every(
-          (item) => currentColorArrangement[item] === decidedColor && !isBlank
+          (item) => currentColorArrangement[item] === decidedColor
         )
       ) {
         setScoreDisplay((score) => score + 3);
@@ -35,17 +36,20 @@ const App = () => {
         return true;
       }
     }
+    // to avoid counting blank squares in the score at the beginning:
+    if (squareBeingDragged === 0) {
+      setScoreDisplay(0);
+    }
   };
 
   const checkForColumnOfFour = () => {
     for (let i = 0; i <= 39; i++) {
       const columnOfFour = [i, i + width, i + width * 2, i + width * 3];
       const decidedColor = currentColorArrangement[i];
-      const isBlank = currentColorArrangement[i] === blank;
 
       if (
         columnOfFour.every(
-          (item) => currentColorArrangement[item] === decidedColor && !isBlank
+          (item) => currentColorArrangement[item] === decidedColor
         )
       ) {
         setScoreDisplay((score) => score + 4);
@@ -53,13 +57,15 @@ const App = () => {
         return true;
       }
     }
+    if (squareBeingDragged === 0) {
+      setScoreDisplay(0);
+    }
   };
 
   const checkForRowOfThree = () => {
     for (let i = 0; i < 64; i++) {
       const rowOfThree = [i, i + 1, i + 2];
       const decidedColor = currentColorArrangement[i];
-      const isBlank = currentColorArrangement[i] === blank;
       // exclude from checking the last two squares of each row
       const notValid = [
         6,
@@ -84,7 +90,7 @@ const App = () => {
 
       if (
         rowOfThree.every(
-          (item) => currentColorArrangement[item] === decidedColor && !isBlank
+          (item) => currentColorArrangement[item] === decidedColor
         )
       ) {
         setScoreDisplay((score) => score + 3);
@@ -92,13 +98,15 @@ const App = () => {
         return true;
       }
     }
+    if (squareBeingDragged === 0) {
+      setScoreDisplay(0);
+    }
   };
 
   const checkForRowOfFour = () => {
     for (let i = 0; i < 64; i++) {
       const rowOfFour = [i, i + 1, i + 2, i + 3];
       const decidedColor = currentColorArrangement[i];
-      const isBlank = currentColorArrangement[i] === blank;
       // exclude from checking the last two squares of each row
       const notValid = [
         5,
@@ -131,13 +139,16 @@ const App = () => {
 
       if (
         rowOfFour.every(
-          (item) => currentColorArrangement[item] === decidedColor && !isBlank
+          (item) => currentColorArrangement[item] === decidedColor
         )
       ) {
         setScoreDisplay((score) => score + 4);
         rowOfFour.forEach((item) => (currentColorArrangement[item] = blank));
         return true;
       }
+    }
+    if (squareBeingDragged === 0) {
+      setScoreDisplay(0);
     }
   };
 
@@ -146,7 +157,7 @@ const App = () => {
       const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
       const isFirstRow = firstRow.includes(i);
 
-      //if it is first row and empty => generate random color
+      //if it is first row and empty => generate random image
       if (isFirstRow && currentColorArrangement[i] === blank) {
         let randomNumber = Math.floor(Math.random() * currentSetImages.length);
         currentColorArrangement[i] = currentSetImages[randomNumber];
