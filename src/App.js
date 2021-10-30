@@ -239,11 +239,12 @@ const App = () => {
       randomColorArrangment.push(randomColor);
     }
     setCurrentColorArrangement(randomColorArrangment);
+    setScoreDisplay(0);
   };
 
   useEffect(() => {
     createBoard();
-    setScoreDisplay(0);
+    // eslint-disable-next-line
   }, [currentSetImages]);
 
   // check for ColumnsOfThree every 100msec
@@ -258,6 +259,7 @@ const App = () => {
       setCurrentColorArrangement([...currentColorArrangement]);
     }, 100);
     return () => clearInterval(timer);
+    // eslint-disable-next-line
   }, [
     // checkForColumnOfFour,
     // checkForColumnOfThree,

@@ -15,6 +15,7 @@ const Buttons = () => {
           {buttons.map((item) => {
             return (
               <button
+                type='button'
                 className='choose-btn'
                 key={item.id}
                 data-id={item.title}
