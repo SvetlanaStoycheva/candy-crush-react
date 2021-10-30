@@ -13,7 +13,6 @@ const App = () => {
     setSquareBeingDragged,
   } = useGlobalContext();
   const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
-
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(0);
   const [scoreDisplay, setScoreDisplay] = useState(0);
 

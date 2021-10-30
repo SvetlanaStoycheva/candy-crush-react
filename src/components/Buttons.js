@@ -22,7 +22,11 @@ const Buttons = () => {
                 onClick={(e) => handleCurrentBtn(e)}
               >
                 <p>{item.title}</p>
-                <img className='choose-btn-img' src={item.img} alt='' />
+                <img
+                  className='choose-btn-img'
+                  src={item.img}
+                  alt={item.title}
+                />
               </button>
             );
           })}
